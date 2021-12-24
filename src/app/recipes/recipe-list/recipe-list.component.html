@@ -1,0 +1,19 @@
+<div class = "row">
+    <div class = "col-xs-12">
+        <button class = "btn btn-success" (click) = "onNewRecipe()">New Recipe</button>
+    </div>
+</div>
+<hr>
+<div class = "row">
+    <div class = "col-xs-12">
+        <app-recipe-item 
+        *ngFor= "let recipeElement of recipes; let i = index" 
+        [recipe]= "recipeElement"
+        [index] = 'i'
+       >   <!--Here we need to emit another event to the parent component os this section (recipes.component) as the last emmission was still one level short. We have to pass the SELECTED RECIPE, hence why we pass 'Recipe element' as the parametre-->
+        
+        </app-recipe-item>
+
+    </div>
+</div>
+

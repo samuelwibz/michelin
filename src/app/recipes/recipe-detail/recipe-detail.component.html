@@ -1,0 +1,42 @@
+<div class = "row">
+    <div class="col-xs-12">
+        <img src= "{{recipeDetails.imagePath}}" alt = "{{recipeDetails.name}}" class = "img-responsive" style = "max-height: 300px;">
+    </div>
+</div>
+<div class = "row">
+    <div class = "col-xs-12 recipe-title">
+        <h1> {{recipeDetails.name}}</h1> <!--'recipeDetails' is the variable from the component which we're binding to the recipe.component outside -->
+    </div>
+</div>
+<div class = "row">
+    <div class = "col-xs-12">
+        <div  class = "btn-group" appButtonDropdown>
+            <button type = "button" 
+            class = "btn btn-primary dropdown-toggle"
+            >Manage Recipe <span class = "caret"></span>
+        </button>
+        <ul class = "dropdown-menu">
+            <li><a id = "add-to-shopping-list-button" (click) = "onAddToShoppingList()" style = "cursor: pointer">To Shopping List</a></li>
+            <li><a  style = "cursor: pointer" (click) = "onEditRecipe()">Edit Recipe</a></li>
+            <li><a  style = "cursor: pointer">Delete Recipe</a></li>
+        </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 recipe-description">
+       {{recipeDetails.description}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <ul class = "list-group">
+            <li 
+                class = "list-group-item"
+                *ngFor = "let ingredient of recipeDetails.ingredients">
+                {{ingredient.name}} - {{ingredient.amount}}
+            </li>
+            
+        </ul>
+    </div>
+</div>
