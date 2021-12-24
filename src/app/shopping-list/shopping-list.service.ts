@@ -44,14 +44,17 @@ export class ShoppingListService {
                 this.addToShoppingList(ingredient)
            }
            */
- 
-           this.ingredients.push(...ingredients);   /*(spread operator (all ingredints previous up to the current ingredient can be pushed into the ingredients array)
-                                                      NOTE: We don't push an array as that will just push an array on top of the existing array*/
+          
+           this.ingredients.push(...ingredients);   
       
            //this.ingredientsChanged.emit(this.ingredients.slice()); //Notifying other components that the ingredients array has been updated
 
            this.ingredientsChanged.next(this.ingredients.slice());
       
          }
-
+      
+      updateIngredient(index: number, newIngredient: IIngredient){
+        this.ingredients[index] = newIngredient;
+        this.ingredientsChanged.next(this.ingredients.slice());
+      }
 }   

@@ -47,57 +47,82 @@ fdescribe (`ShoppingEditComponent`, () => {
 
     it('should initally have all input values empty upon initialisation', () => {
         const shoppingEditFormGroup = component.shoppingEditForm;
-        
         const shoppingEditFormValues = {
             itemDetails: {
                  name: null,
                  amount:null
             }
         }
-
         expect(shoppingEditFormGroup.value).toEqual(shoppingEditFormValues);
     })
-})
 
+    it(`should disable the 'add' button when the form is not valid`, () => {
+        const shoppingEditFormAddBtn = fixture.debugElement.nativeElement.querySelector('#submitBtn')
+        const shoppingEditForm = component.shoppingEditForm.valid
 
-/*
+        expect(shoppingEditForm).toBeFalsy();
+        expect (shoppingEditFormAddBtn.disabled).toBeTruthy();
+    }) 
 
+    it (`should return an error if 'name' field is empty`,() => {
+        //Arrange   
+            let errors = {}
+            let shoppingEditForm = component.shoppingEditForm.get(['itemDetails', 'name']);
+            let shoppingEditFormInput = fixture.debugElement.nativeElement;
 
-describe ('RecipeDetailComponent', () => {
+        //Act
+            errors = shoppingEditForm.errors||{};
+            shoppingEditForm.markAsTouched();
+            shoppingEditForm.setValue('');
+            fixture.detectChanges();
 
-
-    beforeEach(() => {
-        spectator = createComponent();
-        router = TestBed.get(Router);
-        location = TestBed.get(Location);
-        jasmine.getEnv().allowRespy(true);
+        //Assert
+            expect(errors['required']).toBeTruthy();
+            expect(shoppingEditForm.touched).toBeTruthy();
+            expect(shoppingEditFormInput.querySelector('#name-error').textContent).toBe('This field is required');
     })
 
-    it ('should create the recipe details', () => {
-        const recipes: IRecipe[] = [
-            {
-               name: 'Da Cow', 
-               description:'A vegan FRIENDLY dish that all vegans can enjoy', 
-               imagePath: 'https://cdn.britannica.com/55/174255-050-526314B6/brown-Guernsey-cow.jpg', 
-               ingredients:  [
-                   {name: 'Phat Cow', amount: 2}
-                 ]
-            }
-          ];
-    
-          //Set the component up with a recipe
-          const recipeService = spectator.inject(RecipesService);
-          recipeService.getRecipe.andReturn(recipes[0]);
-          spectator.detectChanges();
+    it(`should validate the 'name' field if a characters are entered into the input bar`, () => {
+        //Arrange
+        const shoppingEditFormNameElement = component.shoppingEditForm.get(['itemDetails', 'name']);
 
-          expect (recipeService.getRecipe).toHaveBeenCalled();
+        //Act
+        shoppingEditFormNameElement.setValue('Egg');
+       
+        //Assert
+        expect(shoppingEditFormNameElement.errors).toBeNull();
+    })
 
-          //The title is displayed as 'Da Cow'
-          expect('.recipe-title').toContainText('Da Cow');
+    it(`should return an error if 'amount' field is empty`, () => {
+        //Arrange 
+            let errors = {};
+            let shoppingEditForm = component.shoppingEditForm.get(['itemDetails', 'amount']);
+            let shoppingEditFormInput = fixture.debugElement.nativeElement;
+        
+        //Act
+            errors = shoppingEditForm.errors||{};
+            shoppingEditForm.markAllAsTouched();
+            shoppingEditForm.setValue(null);
+            fixture.detectChanges();
 
-          //The description is a 'A vegan FRIENDLY dish that all vegans can enjoy'
-          expect('.recipe-description').toContainText('A vegan FRIENDLY dish that all vegans can enjoy');
+        //Assert
+            expect(errors['required']).toBeTruthy();
+            expect(shoppingEditForm.touched).toBeTruthy();
+            expect(shoppingEditFormInput.querySelectorAll('#amount-error')[0].textContent).toBe('This field is required');
+    })
 
-    });
+    it(`should return an error if value of the 'amount' field is less than 0`, () => {
+        //Arrange
+            let shoppingEditForm = component.shoppingEditForm.get(['itemDetails', 'amount']);
+            let shoppingEditFormInput = fixture.debugElement.nativeElement;
 
-    */
+        //Act
+            shoppingEditForm.markAllAsTouched();
+            shoppingEditForm.setValue(-3);
+            fixture.detectChanges();
+
+        //Assert
+            expect(shoppingEditForm.touched).toBeTruthy();
+            expect(shoppingEditFormInput.querySelectorAll('#amount-error')[0].textContent).toBe('Amount has to be greater than 0');
+    })
+})
