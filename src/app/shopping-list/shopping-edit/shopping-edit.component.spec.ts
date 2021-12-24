@@ -30,6 +30,7 @@ fdescribe (`ShoppingEditComponent`, () => {
         fixture = TestBed.createComponent(ShoppingEditComponent);
         component = fixture.componentInstance;
         shoppingService = TestBed.get(ShoppingListService);
+
         fixture.detectChanges();
     })
 
@@ -46,12 +47,14 @@ fdescribe (`ShoppingEditComponent`, () => {
 
     it('should initally have all input values empty upon initialisation', () => {
         const shoppingEditFormGroup = component.shoppingEditForm;
-        const shoppingEditFormValues = new FormGroup ({
-            itemDetails: new FormGroup({
-            name: new FormControl(''),
-            amount: new FormControl('')
-            })
-        })
+        
+        const shoppingEditFormValues = {
+            itemDetails: {
+                 name: null,
+                 amount:null
+            }
+        }
+
         expect(shoppingEditFormGroup.value).toEqual(shoppingEditFormValues);
     })
 })

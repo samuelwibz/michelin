@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IIngredient } from 'src/app/shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
@@ -18,15 +18,16 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editedItem: IIngredient;
   shoppingEditForm!: FormGroup;
   amountPattern = "^[1-9]+[0-9]*$";
+ 
 
-  constructor(private shoppingService: ShoppingListService) { }
+  constructor(private shoppingService: ShoppingListService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
    
-    this.shoppingEditForm = new FormGroup ({
-      itemDetails: new FormGroup({
-          name: new FormControl(null, [Validators.required] ),
-          amount: new FormControl (null, [Validators.required, Validators.pattern(this.amountPattern)])
+    this.shoppingEditForm = this.fb.group ({
+      itemDetails: this.fb.group({
+          name: [null, [Validators.required] ],
+          amount: [null, [Validators.required, Validators.pattern(this.amountPattern)]]
       })
     })
 
