@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 export class RecipesService {
     recipesChanged = new Subject<IRecipe[]>();
     
+    /*
     private recipes: IRecipe[] = [
         {
            name: 'Da Cow', 
@@ -30,11 +31,17 @@ export class RecipesService {
          'https://cdn.britannica.com/55/174255-050-526314B6/brown-Guernsey-cow.jpg',
           ingredients: [{ name: 'apple', amount: 5 }],
       }
-/*
-      recipes: IRecipe[] = [this.recipe1];
-*/
+      */
+
+      recipes: IRecipe[] = [];
+
       constructor(private shoppingService: ShoppingListService){
    
+      }
+
+      setRecipes(recipes: IRecipe[]){
+        this.recipes = recipes;
+        this.recipesChanged.next(this.recipes.slice());
       }
 
       getRecipes() {
